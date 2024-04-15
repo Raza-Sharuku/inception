@@ -1,13 +1,11 @@
 FROM debian:bullseye
 
-
-
 #installation of Nginx
 RUN apt-get update && apt-get install -y nginx
 
 RUN useradd --system --no-create-home --shell /bin/false nginx
 
-RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /var/lib/apt/lists/*
 #設定ファイルのコピー
 COPY nginx.conf /etc/nginx/nginx.conf
 

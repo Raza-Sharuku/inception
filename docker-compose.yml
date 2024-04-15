@@ -1,26 +1,36 @@
-version: '3.9'
+version: '3'
 
 services:
-  app:
-    container_name: wordpress
-    build:
-      context: .
-      dockerfile: /sraza/Desktop/inception/wordpresss/Dockerfile
-    volumes:
-      - ./aaplication:/code
-      - ./static:/static
+  nginx:
+    build: ./nginx
+    restart: always
     ports:
-      - '8000:8000'
-      # port for debug
-      - '8008:8080'
-    command: sh -c "/usr/local/bin/entrypoint.sh"
-    stdin_open: true
-    tty: true
-    env_file:
-      - .env
+      - "80:80"
+      - "443:443"
+    volumes:
+      - wordpress_files:/var/www/html
+    networks:
+      - app-network
 
-    nginx:
-      container_name:nginx
-      build:
-        context:
-          dockerfile:/sraza/Desktop/inception/nginx/dockerfile
+  wordpress:
+    build: ./wordpress
+    restart: always
+    volumes:
+      - wordpress_files:/var/www/html
+    networks:
+      - app-network
+
+  mariadb:
+    build: ./mariadb
+    restart: always
+    volumes:
+      - wordpress_db:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  wordpress_files:
+  wordpress_db:
+
+networks:
+  app-network:

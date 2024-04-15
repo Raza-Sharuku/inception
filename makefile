@@ -1,1 +1,12 @@
-make file is not working 
+all: build up
+
+build:
+  docker-compose build
+
+up:
+  docker-compose up -d
+
+down:
+  docker-compose down
+
+.PHONY: all build up down
