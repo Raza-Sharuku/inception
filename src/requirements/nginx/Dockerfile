@@ -1,26 +1,29 @@
 FROM debian:bullseye
 
-#installation of Nginx
-RUN apt-get update && apt-get install -y nginx
+# 必要なパッケージのインストールとキャッシュの削除
+RUN apt-get update && apt-get install -y nginx openssl &&  rm -rf /var/lib/apt/lists/*
 
-RUN useradd --system --no-create-home --shell /bin/false nginx
+# 自己署名証明書の生成
+RUN mkdir /etc/nginx/ssl && \
+    openssl req -newkey rsa:4096 -nodes -keyout /etc/nginx/ssl/server.key \
+    -x509 -days 365 -out /etc/nginx/ssl/server.crt \
+    -subj "/C=JP/ST=Tokyo/L=city/O=42tokyo/CN=sraza.42.fr"
 
-# RUN rm -rf /var/lib/apt/lists/*
-#設定ファイルのコピー
+# nginx.confをコンテナにコピー
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
-# SSL証明書と秘密鍵をコピー
-COPY ssl/ssl_certificate.crt /etc/nginx/ssl/
-COPY ssl/ssl_certificate.key /etc/nginx/ssl/
-
-
+# コンテンツのコピー
 RUN mkdir -p /var/www/html
-
-COPY index.html /var/www/html/
+COPY index.html /var/www/html/sraza.html
 COPY 404.html /var/www/html/
 COPY 50x.html /var/www/html/
-COPY index.html /var/www/html/
 
+# 既存のindex.nginx-debian.htmlを削除
+RUN rm -f /var/www/html/index.nginx-debian.html
+
+# ポート80番と443番を公開
 EXPOSE 80 443
 
+# Nginxをフォアグラウンドで実行
 CMD ["nginx", "-g", "daemon off;"]
