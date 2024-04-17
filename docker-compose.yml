@@ -2,35 +2,35 @@ version: '3'
 
 services:
   nginx:
-    build: ./nginx
+    build: ./src/requirements/nginx
     restart: always
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - wordpress_files:/var/www/html
-    networks:
-      - app-network
+#     volumes:
+#       - wordpress_files:/var/www/html
+    # networks:
+    #   - app-network
 
-  wordpress:
-    build: ./wordpress
-    restart: always
-    volumes:
-      - wordpress_files:/var/www/html
-    networks:
-      - app-network
+#   wordpress:
+#     build: ./wordpress
+#     restart: always
+#     volumes:
+#       - wordpress_files:/var/www/html
+#     networks:
+#       - app-network
 
-  mariadb:
-    build: ./mariadb
-    restart: always
-    volumes:
-      - wordpress_db:/var/lib/mysql
-    networks:
-      - app-network
+#   mariadb:
+#     build: ./mariadb
+#     restart: always
+#     volumes:
+#       - wordpress_db:/var/lib/mysql
+#     networks:
+#       - app-network
 
-volumes:
-  wordpress_files:
-  wordpress_db:
+# volumes:
+#   wordpress_files:
+#   wordpress_db:
 
-networks:
-  app-network:
+# networks:
+#   app-network:
