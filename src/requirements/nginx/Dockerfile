@@ -26,7 +26,8 @@ RUN chmod -R 755 /var/www/html
 RUN rm -f /var/www/html/index.nginx-debian.html
 
 # ポート80番と443番を公開
-EXPOSE 80 443
+# EXPOSE 80 443
+EXPOSE 80 
 
 # Nginxをフォアグラウンドで実行
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]

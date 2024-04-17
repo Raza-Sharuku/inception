@@ -5,8 +5,8 @@ services:
     build: ./src/requirements/nginx
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "127.0.0.1:8000:80"
+      # - "127.0.0.1:8000:443"
 #     volumes:
 #       - wordpress_files:/var/www/html
     # networks:
