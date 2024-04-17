@@ -10,8 +10,8 @@ RUN mkdir /etc/nginx/ssl && \
     -subj "/C=JP/ST=Tokyo/L=city/O=42tokyo/CN=sraza.42.fr"
 
 # nginx.confをコンテナにコピー
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 
 # コンテンツのコピー
 RUN mkdir -p /var/www/html
@@ -26,8 +26,13 @@ RUN chmod -R 755 /var/www/html
 RUN rm -f /var/www/html/index.nginx-debian.html
 
 # ポート80番と443番を公開
+EXPOSE 443
 # EXPOSE 80 443
-EXPOSE 80 
 
 # Nginxをフォアグラウンドで実行
 CMD ["nginx", "-g", "daemon off;"]
+
+
+# docker container run -p 8000:80 -p  443:443 --name my_nginx_container --rm  nginx1:my_nginx1
+# docker image build --tag nginx1:my_nginx1  .   
+# docker rmi nginx1:my_nginx1 
