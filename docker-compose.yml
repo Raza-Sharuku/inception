@@ -1,35 +1,52 @@
-version: '3'
+# version: '3'
+
+# services:
+  # nginx:
+  #   build: ./src/requirements/nginx
+  #   restart: always
+  #   ports:
+  #     - "127.0.0.1:443:443"
+  #   volumes:
+  #     - wordpress_files:/var/www/html
+  #   networks:
+  #     - inception-sraza-network
+
+  # wordpress:
+  #   build: ./wordpress
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   volumes:
+  #     - wordpress_files:/var/www/html
+  #   networks:
+  #     - inception-sraza-network
+
+  # mariadb:
+  #   build: ./mariadb
+  #   restart: always
+  #   volumes:
+  #     - wordpress_db:/var/lib/mysql
+  #   networks:
+  #     - inception-sraza-network
 
 services:
-  nginx:
-    build: ./src/requirements/nginx
-    restart: always
+  mariadb:
+    build:
+      context: ./src/requirements/mariadb
+      args:
+        MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+        MYSQL_ROOT_PW: ${MYSQL_ROOT_PW}
+        MYSQL_USER_NAME: ${MYSQL_USER_NAME}
+        MYSQL_USER_PW: ${MYSQL_USER_PW}
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
     ports:
-      - "127.0.0.1:443:443"
-#     volumes:
-#       - wordpress_files:/var/www/html
-    # networks:
-    #   - app-network
-
-#   wordpress:
-#     build: ./wordpress
-#     restart: always
-#     volumes:
-#       - wordpress_files:/var/www/html
-#     networks:
-#       - app-network
-
-#   mariadb:
-#     build: ./mariadb
-#     restart: always
-#     volumes:
-#       - wordpress_db:/var/lib/mysql
-#     networks:
-#       - app-network
+      - "3306:3306"
+    restart: always
 
 # volumes:
 #   wordpress_files:
 #   wordpress_db:
 
 # networks:
-#   app-network:
+#   inception-sraza-network:

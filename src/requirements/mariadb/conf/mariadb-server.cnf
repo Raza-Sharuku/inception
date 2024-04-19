@@ -1,0 +1,16 @@
+[server]
+
+[mysqld]
+datadir=/var/lib/mysql
+log-error=/var/log/mariadb/error.log
+pid-file=/var/run/mysqld/mysqld.pid
+socket=/tmp/mysqld.sock
+
+[galera]
+bind-address=0.0.0.0
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.3]

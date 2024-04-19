@@ -16,14 +16,9 @@ COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 # コンテンツのコピー
 RUN mkdir -p /var/www/html
 COPY index.html /var/www/html/index.html
-COPY 404.html /var/www/html/
-COPY 50x.html /var/www/html/
 
 # ファイルのパーミッションを変更
 RUN chmod -R 755 /var/www/html
-
-# 既存のindex.nginx-debian.htmlを削除
-RUN rm -f /var/www/html/index.nginx-debian.html
 
 # ポート80番と443番を公開
 EXPOSE 443
