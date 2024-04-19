@@ -33,11 +33,11 @@ services:
   mariadb:
     build:
       context: ./src/requirements/mariadb
-      args:
-        MYSQL_DB_NAME: ${MYSQL_DB_NAME}
-        MYSQL_ROOT_PW: ${MYSQL_ROOT_PW}
-        MYSQL_USER_NAME: ${MYSQL_USER_NAME}
-        MYSQL_USER_PW: ${MYSQL_USER_PW}
+    environment:
+      MYSQL_DB_NAME: "${MYSQL_DB_NAME}"
+      MYSQL_ROOT_PW: "${MYSQL_ROOT_PW}"
+      MYSQL_USER_NAME: "${MYSQL_USER_NAME}"
+      MYSQL_USER_PW: "${MYSQL_USER_PW}"
     volumes:
       - ./mariadb_data:/var/lib/mysql
     ports:
