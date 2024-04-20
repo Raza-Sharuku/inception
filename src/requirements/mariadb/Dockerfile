@@ -23,10 +23,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # 設定ファイルのコピーと基本設定
+RUN chmod +x /etc/mysql/mariadb.conf.d
 COPY ./conf/mariadb-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chmod +x /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN mysql_install_db --basedir=/usr --datadir=/vol_db/mysql --user=mysql
-RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld
+
+RUN mkdir -p /var/run/mysqld && \
+    chown mysql:mysql /var/run/mysqld && \
+    chmod +x /var/run/mysqld
 
 #ユーザー設定
 RUN getent group mysql || groupadd -r mysql
@@ -37,6 +41,7 @@ RUN mkdir -p /tmp && chown mysql:mysql /tmp
 RUN mkdir -p /var/log/mariadb && chown mysql:mysql /var/log/mariadb
 
 # setup_db.shのコピーと実行権限の付与
+RUN chmod +x /usr/local/bin
 COPY ./tools/setup_db.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup_db.sh
 
@@ -47,6 +52,4 @@ USER mysql
 
 
 # コンテナ起動時にsetup_db.shを実行し、MariaDBを起動
-# CMD ["/bin/bash", "-c", "/usr/local/bin/setup_db.sh && mysqld --socket=/tmp/mysqld.sock"]
-CMD ["/bin/bash", "-c", "/usr/local/bin/setup_db.sh && mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf"]
-
+CMD ["mysqld", "--defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf"]

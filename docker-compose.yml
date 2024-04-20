@@ -39,9 +39,10 @@ services:
       MYSQL_USER_NAME: "${MYSQL_USER_NAME}"
       MYSQL_USER_PW: "${MYSQL_USER_PW}"
     volumes:
-      - ./mariadb_data:/var/lib/mysql
+      - ./mariadb_data:/var/lib/mariadb
     ports:
       - "3306:3306"
+    command: sh -c "/usr/local/bin/setup_db.sh && mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0"
     restart: always
 
 # volumes:
