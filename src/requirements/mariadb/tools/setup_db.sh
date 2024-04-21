@@ -1,33 +1,38 @@
 #!/bin/bash
+# MariaDBサーバーを起動する関数
+start_mariadb() {
+  mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0
+}
 
-# Wait for MariaDB server to start
-# while ! mysqladmin ping --silent --socket=/var/run/mysqld/mysqld.sock ; do
-#   echo "Waiting for database connection..."
-#   sleep 5
-# done
+# MariaDBの設定を行う関数
+setup_mariadb() {
+  # Wait for MariaDB server to start
+  while ! mysqladmin ping -h localhost --silent; do
+    echo "Waiting for database connection..."
+    sleep 5
+  done
 
-# データベースがなかったら作成する→基本的な設定を行うスクリプト（パスワードやルート権限等）
-# mysql --socket=/var/run/mysqld/mysqld.sock -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DB_NAME}\`;"
-# mysql --socket=/var/run/mysqld/mysqld.sock -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER_NAME}\`@'localhost' IDENTIFIED BY '${MYSQL_USER_PW}';"
-# mysql --socket=/var/run/mysqld/mysqld.sock -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DB_NAME}\`.* TO \`${MYSQL_USER_NAME}\`@'%';"
-# mysql --socket=/var/run/mysqld/mysqld.sock -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PW}';"
-# mysql --socket=/var/run/mysqld/mysqld.sock -e "FLUSH PRIVILEGES;"
+  echo "mysqld is alive"
 
-# mysqladmin -u root -p $MYSQL_ROOT_PW shutdown
+  # データベースがなかったら作成する→基本的な設定を行うスクリプト（パスワードやルート権限等）
+  mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DB_NAME}\`;"
+  
+  # rootユーザーのパスワードを設定
+  mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PW}';"
 
+  # 一般ユーザーを作成
+  mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER_NAME}\`@'localhost' IDENTIFIED BY '${MYSQL_USER_PW}';"
+  mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DB_NAME}\`.* TO \`${MYSQL_USER_NAME}\`@'%';"
+  mysql -e "FLUSH PRIVILEGES;"
 
+  echo "MariaDB setup completed successfully!"
+}
 
-# Wait for MariaDB server to start
-while ! mysqladmin ping -h localhost -u root -p"${MYSQL_ROOT_PW}" --silent; do
-  echo "Waiting for database connection..."
-  sleep 5
-done
+# バックグラウンドでMariaDBサーバーを起動
+start_mariadb &
 
-# データベースがなかったら作成する→基本的な設定を行うスクリプト（パスワードやルート権限等）
-mysql -u root -p"${MYSQL_ROOT_PW}" -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DB_NAME}\`;"
-mysql -u root -p"${MYSQL_ROOT_PW}" -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER_NAME}\`@'localhost' IDENTIFIED BY '${MYSQL_USER_PW}';"
-mysql -u root -p"${MYSQL_ROOT_PW}" -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DB_NAME}\`.* TO \`${MYSQL_USER_NAME}\`@'%';"
-mysql -u root -p"${MYSQL_ROOT_PW}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PW}';"
-mysql -u root -p"${MYSQL_ROOT_PW}" -e "FLUSH PRIVILEGES;"
+# MariaDBの設定を行う
+setup_mariadb
 
-echo "MariaDB setup completed successfully!"
+# MariaDBサーバーが終了するまで待機
+wait

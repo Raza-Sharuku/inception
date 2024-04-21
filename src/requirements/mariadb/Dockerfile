@@ -48,4 +48,6 @@ EXPOSE 3306
 
 USER mysql
 
-CMD ["/bin/bash", "-c", "/usr/local/bin/setup_db.sh && mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf"]
+CMD ["/usr/local/bin/setup_db.sh"]
+
+# CMD ["/bin/bash", "-c", "/usr/local/bin/setup_db.sh && mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf"]
