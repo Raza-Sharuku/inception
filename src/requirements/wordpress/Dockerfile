@@ -21,8 +21,11 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 
-COPY tools/wordpress-6.2.tar.gz /tmp/wordpress.tar.gz
-RUN tar -xzf /tmp/wordpress.tar.gz --strip-components=1 && rm /tmp/wordpress.tar.gz
+COPY tools/wordpress-6.2.tar.gz /tmp/
+RUN chmod +x /tmp/
+# RUN tar -xzf /tmp/wordpress-6.2.tar.gz
+# RUN tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress
+# RUN rm /tmp/wordpress-6.2.tar.gz
 
 # php-fpmの設定
 RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.0/fpm/php.ini

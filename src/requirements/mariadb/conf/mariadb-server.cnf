@@ -1,10 +1,10 @@
 [server]
 
 [mysqld]
-# datadir=/var/lib/mysql
-# log-error=/var/log/mariadb/error.log
-# pid-file=/var/run/mysqld/mysqld.pid
 socket=/var/run/mysqld/mysqld.sock
+plugin-load-add = auth_pam.so
+lower_case_table_names = 1
+tmpdir = /var/tmp
 
 [galera]
 bind-address=0.0.0.0
