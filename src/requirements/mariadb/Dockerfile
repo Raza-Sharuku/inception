@@ -20,6 +20,8 @@ RUN mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql
 # setup_db.shのコピーと実行権限の付与
 COPY ./tools/setup_db.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup_db.sh
+RUN mkdir -p /var/log/mariadb
+# RUN chmod +x /var/log/mariadb
 
 # ポート指定
 EXPOSE 3306

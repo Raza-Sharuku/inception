@@ -2,7 +2,7 @@
 
 [mysqld]
 # datadir=/var/lib/mysql
-log-error=/var/log/mariadb/error.log
+# log-error=/var/log/mariadb/error.log
 # pid-file=/var/run/mysqld/mysqld.pid
 socket=/var/run/mysqld/mysqld.sock
 

@@ -1,0 +1,119 @@
+
+# nginxもOK
+# services:
+#   nginx:
+#     build:
+#       context: ./requirements/nginx
+#     restart: always
+#     ports:
+#       - "127.0.0.1:443:443"
+#     volumes:
+#       - wordpress_files:/var/www/html
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - inception-sraza-network
+
+#   mariadb:
+#     build:
+#       context: ./requirements/mariadb
+#     environment:
+#       MYSQL_DB_NAME: "${MYSQL_DB_NAME}"
+#       MYSQL_ROOT_PW: "${MYSQL_ROOT_PW}"
+#       MYSQL_USER_NAME: "${MYSQL_USER_NAME}"
+#       MYSQL_USER_PW: "${MYSQL_USER_PW}"
+#     volumes:
+#       - ../mariadb_data:/var/lib/mariadb
+#     ports:
+#       - "3306:3306"
+#     command: sh -c "/usr/local/bin/setup_db.sh && mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0"
+#     restart: always
+#     networks:
+#       - inception-sraza-network
+
+#   wordpress:
+#     build:
+#       context: ./requirements/wordpress
+#     volumes:
+#       - wordpress_files:/var/www/html
+#     depends_on:
+#       - mariadb
+#     environment:
+#       WORDPRESS_DB_HOST: mariadb
+#       WORDPRESS_DB_NAME: "${MYSQL_DB_NAME}"
+#       WORDPRESS_DB_USER: "${MYSQL_USER_NAME}"
+#       WORDPRESS_DB_PASSWORD: "${MYSQL_USER_PW}"
+#     restart: always
+#     networks:
+#       - inception-sraza-network
+
+# volumes:
+#   wordpress_files:
+#     name: wordpress_files
+
+# networks:
+#   inception-sraza-network:
+#     name: inception-sraza-network
+
+
+
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+    restart: always
+    ports:
+      - "127.0.0.1:443:443"
+    volumes:
+      - wordpress_files:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - inception-sraza-network
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    environment:
+      MYSQL_DB_NAME: "${MYSQL_DB_NAME}"
+      MYSQL_ROOT_PW: "${MYSQL_ROOT_PW}"
+      MYSQL_USER_NAME: "${MYSQL_USER_NAME}"
+      MYSQL_USER_PW: "${MYSQL_USER_PW}"
+    volumes:
+      # - ../mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    command: sh -c "mkdir -p /var/log/mariadb &&  /usr/local/bin/setup_db.sh && exec mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0"
+    # command: sh -c "mkdir -p /var/log/mariadb && chown -R mysql:mysql /var/log/mariadb && /usr/local/bin/setup_db.sh && exec mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0"
+    restart: always
+    networks:
+      - inception-sraza-network
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    volumes:
+      # - wordpress_files:/var/www/html
+      # - ../wordpress_data:/var/www/html
+      - wordpress_files:/var/www/html
+      - ./requirements/wordpress/conf/auto_config.sh:/var/www/html/auto_config.sh
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: "${MYSQL_DB_NAME}"
+      WORDPRESS_DB_USER: "${MYSQL_USER_NAME}"
+      WORDPRESS_DB_PASSWORD: "${MYSQL_USER_PW}"
+    restart: always
+    entrypoint: sh -c "chmod +x /var/www/html/auto_config.sh && /var/www/html/auto_config.sh"
+    networks:
+      - inception-sraza-network
+
+volumes:
+  wordpress_files:
+    name: wordpress_files
+
+networks:
+  inception-sraza-network:
+    name: inception-sraza-network

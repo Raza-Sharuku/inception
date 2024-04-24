@@ -1,12 +1,14 @@
 #!/bin/bash
 
 # MariaDBサーバーを起動する関数
-start_mariadb() {
+start_mariadb() 
+{
   mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0
 }
 
 # MariaDBの設定を行う関数
-setup_mariadb() {
+setup_mariadb() 
+{
   # Wait for MariaDB server to start
   while ! mysqladmin ping -h localhost --silent; do
     echo "Waiting for database connection..."

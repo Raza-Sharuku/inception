@@ -20,14 +20,8 @@ COPY index.html /var/www/html/index.html
 # ファイルのパーミッションを変更
 RUN chmod -R 755 /var/www/html
 
-# ポート80番と443番を公開
+# ポート443番を使用する
 EXPOSE 443
-# EXPOSE 80 443
 
 # Nginxをフォアグラウンドで実行
 CMD ["nginx", "-g", "daemon off;"]
-
-
-# docker container run -p 8000:80 -p  443:443 --name my_nginx_container --rm  nginx1:my_nginx1
-# docker image build --tag nginx1:my_nginx1  .   
-# docker rmi nginx1:my_nginx1 
