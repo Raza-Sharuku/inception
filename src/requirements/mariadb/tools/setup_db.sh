@@ -17,8 +17,10 @@ setup_mariadb()
     echo "mysqld is alive"
 
     # rootユーザーのパスワードを設定し、全権限を付与
-    mysql -e "SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PW}');"
     mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;"
+    mysql -e "SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PW}');"
+    mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+    mysql -e "SET PASSWORD FOR 'root'@'%'=PASSWORD('${MYSQL_ROOT_PW}');"
     mysql -e "FLUSH PRIVILEGES;"
 
     # データベースを作成
@@ -27,6 +29,8 @@ setup_mariadb()
     # 一般ユーザーを作成し、指定のデータベースに対する権限を付与
     mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER_NAME}\`@'localhost' IDENTIFIED BY '${MYSQL_USER_PW}';"
     mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DB_NAME}\`.* TO \`${MYSQL_USER_NAME}\`@'localhost';"
+    mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER_NAME}\`@'%' IDENTIFIED BY '${MYSQL_USER_PW}';"
+    mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DB_NAME}\`.* TO \`${MYSQL_USER_NAME}\`@'%';"
     mysql -e "FLUSH PRIVILEGES;"
 
     echo "MariaDB setup completed successfully!"

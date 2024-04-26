@@ -10,7 +10,7 @@ RUN mkdir /etc/nginx/ssl && \
     -subj "/C=JP/ST=Tokyo/L=city/O=42tokyo/CN=sraza.42.fr"
 
 # nginx.confをコンテナにコピー
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+# COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 
 # コンテンツのコピー

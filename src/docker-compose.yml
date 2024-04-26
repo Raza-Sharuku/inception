@@ -4,7 +4,7 @@ services:
       context: ./requirements/nginx
     restart: always
     ports:
-      - "127.0.0.1:443:443"
+      - "443:443"
     volumes:
       - web:/var/www/html
     depends_on:
