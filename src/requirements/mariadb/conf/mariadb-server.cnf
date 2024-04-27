@@ -5,6 +5,7 @@ socket=/var/run/mysqld/mysqld.sock
 plugin-load-add = auth_pam.so
 lower_case_table_names = 1
 tmpdir = /var/tmp
+port = 3306
 
 [galera]
 bind-address=0.0.0.0
@@ -13,4 +14,4 @@ bind-address=0.0.0.0
 
 [mariadb]
 
-[mariadb-10.3]
+[mariadb-10.5]

@@ -1,19 +1,24 @@
 #!/bin/bash
 
+
 # MariaDBの起動を待つ
-sleep 10
-
-tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress
-
+while ! mysqladmin ping -h"$MYSQL_HOST" --silent; do
+    echo "Waiting for database connection..."
+    sleep 10
+done
 
 # wp-config.phpが存在しない場合のみ設定を行う
-if [ ! -f /var/www/html/wordpress/wp-config-sample.php ]; then
+if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
+
+  # 解凍
+  # tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress
+  
   # Create wp-config.php using WP-CLI
   wp config create --allow-root \
     --dbname=${MYSQL_DB_NAME} \
     --dbuser=${MYSQL_USER_NAME} \
     --dbpass=${MYSQL_USER_PW} \
-    --dbhost=${MYSQL_USER_NAME} \
+    --dbhost=${MYSQL_HOST} \
     --path=/var/www/html/wordpress \
     --allow-root
 
@@ -36,7 +41,6 @@ if [ ! -f /var/www/html/wordpress/wp-config-sample.php ]; then
     --path=/var/www/html/wordpress \
     --allow-root
 
-  wp plugin update --all --allow-root
 fi
 
 mv /tmp/index.html /var/www/html/wordpress

@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     php8.0-zip \
     php8.0-gd \
     php8.0-curl \
+    mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
 # WordPressの解凍とインストール
@@ -38,6 +39,8 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 COPY conf/auto_config.sh /var/www/html/
 COPY ./tools/index.html /tmp/
 RUN chmod +x /var/www/html/auto_config.sh
+
+RUN tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress  
 
 EXPOSE 9000
 

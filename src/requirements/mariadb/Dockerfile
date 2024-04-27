@@ -7,7 +7,7 @@ ENV DEBCONF_NOWARNINGS=yes
 
 # パッケージのインストールとシステムのアップデート
 RUN apt-get update && \
-    apt-get install -y apt-utils man vim curl sudo expect mariadb-server mariadb-client && \
+    apt-get install -y apt-utils man vim curl sudo expect mariadb-server && \
     apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
