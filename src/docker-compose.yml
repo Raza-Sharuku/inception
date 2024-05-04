@@ -6,11 +6,11 @@ services:
     build:
       context: ./requirements/mariadb
     env_file: .env
-    volumes:
-      - db:/var/lib/mysql
+    # volumes:
+    #   - db:/var/lib/mysql
     restart: always
     ports:
-      - "3306"
+      - "3306:3306"
 
   nginx:
     container_name: nginx
@@ -19,8 +19,8 @@ services:
     restart: always
     ports:
       - "127.0.0.1:443:443"
-    volumes:
-      - web:/var/www/html
+    # volumes:
+    #   - web:/var/www/html
     depends_on:
       - wordpress
     networks:
@@ -30,34 +30,31 @@ services:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
-    volumes:
-      - web:/var/www/html
+    # volumes:
+    #   - web:/var/www/html
     ports:
-      - "9000"
+      - "9000:9000"
     depends_on:
       - mariadb
-    environment:
-      WORDPRESS_DB_HOST: "${MYSQL_HOST}"
-      WORDPRESS_DB_NAME: "${MYSQL_DB_NAME}"
-      WORDPRESS_DB_USER: "${MYSQL_USER_NAME}"
-      WORDPRESS_DB_PASSWORD: "${MYSQL_USER_PW}"
+    env_file:
+      - .env
     restart: always
     entrypoint: sh -c "chmod +x /var/www/html/auto_config.sh && /var/www/html/auto_config.sh"
     networks:
       - inception-sraza-network
 
-volumes:
-  db:
-    driver_opts:
-      type: local
-      device: ${VOLUME_DB}
-      o: bind
-  web:
-    driver_opts:
-      type: local
-      device: ${VOLUME_WEB}
-      o: bind
 
 networks:
   inception-sraza-network:
     name: inception-sraza-network
+# volumes:
+#   db:
+#     driver_opts:
+#       type: local
+#       device: ${VOLUME_DB}
+#       o: bind
+#   web:
+#     driver_opts:
+#       type: local
+#       device: ${VOLUME_WEB}
+#       o: bind
