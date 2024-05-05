@@ -21,20 +21,20 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 
+# システムユーザーとグループの作成
 RUN adduser --system --no-create-home --shell /bin/false nginx \
     && addgroup --system nginx
+
 # fastcgiの処理に関連する設定
-COPY ./conf/php-fpm.conf /etc/php8/php-fpm.conf
-COPY ./conf/www.conf /etc/php8/php-fpm.d/www.conf
+# COPY ./conf/php-fpm.conf /etc/php/8.0/fpm/php-fpm.conf
+COPY ./conf/www.conf /etc/php/8.0/fpm/pool.d/www.conf
 
 COPY tools/wordpress-6.2.tar.gz /tmp/
 RUN chmod +x /tmp/
 
 
 # # php-fpmの設定
-# RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.0/fpm/php.ini
-# RUN sed -i 's/;listen.owner.*/listen.owner = www-data/' /etc/php/8.0/fpm/pool.d/www.conf
-# RUN sed -i 's/;listen.group.*/listen.group = www-data/' /etc/php/8.0/fpm/pool.d/www.conf
+RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.0/fpm/php.ini
 
 # wp-cliのインストール
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

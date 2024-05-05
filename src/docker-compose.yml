@@ -1,41 +1,45 @@
 services:
   mariadb:
-    container_name: mariadb
-    networks:
-      - inception-sraza-network
+    image: mariadb:sraza
     build:
       context: ./requirements/mariadb
-    env_file: .env
-    # volumes:
-    #   - db:/var/lib/mysql
-    restart: always
+    container_name: mariadb
+    volumes:
+      - db:/var/lib/mysql
     ports:
       - "3306:3306"
+    env_file: 
+      - .env
+    restart: always
+    networks:
+      - inception-sraza-network
 
   nginx:
-    container_name: nginx
+    image: nginx:sraza
     build:
       context: ./requirements/nginx
-    restart: always
-    ports:
-      - "127.0.0.1:443:443"
-    # volumes:
-    #   - web:/var/www/html
+    container_name: nginx
     depends_on:
       - wordpress
+    volumes:
+      - web:/var/www/html
+    ports:
+      - "127.0.0.1:443:443"
+    restart: always
     networks:
       - inception-sraza-network
 
   wordpress:
-    container_name: wordpress
+    image: wordpress:sraza
     build:
       context: ./requirements/wordpress
-    # volumes:
-    #   - web:/var/www/html
-    ports:
-      - "9000:9000"
+    container_name: wordpress
     depends_on:
       - mariadb
+    volumes:
+      - web:/var/www/html
+    ports:
+      - "9000"
     env_file:
       - .env
     restart: always
@@ -43,18 +47,17 @@ services:
     networks:
       - inception-sraza-network
 
-
 networks:
   inception-sraza-network:
     name: inception-sraza-network
-# volumes:
-#   db:
-#     driver_opts:
-#       type: local
-#       device: ${VOLUME_DB}
-#       o: bind
-#   web:
-#     driver_opts:
-#       type: local
-#       device: ${VOLUME_WEB}
-#       o: bind
+volumes:
+  db:
+    driver_opts:
+      type: local
+      device: ${VOLUME_DB}
+      o: bind
+  web:
+    driver_opts:
+      type: local
+      device: ${VOLUME_WEB}
+      o: bind

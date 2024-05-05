@@ -15,7 +15,6 @@ echo "Wordpress Unzipping completed"
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
   cd /var/www/html/wordpress
 
-
   # Create wp-config.php using WP-CLI
   wp config create --dbhost=mariadb --dbname=${MYSQL_DB_NAME} --dbuser=${MYSQL_USER_NAME} --dbpass=${MYSQL_USER_PW} --allow-root
 
@@ -32,6 +31,8 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
   echo "wp-config.php Setting Completed"
 fi
 
+sed -ie 's/listen = \/run\/php\/php8.0-fpm.sock/listen = 0.0.0.0:9000/g' /etc/php/8.0/fpm/pool.d/www.conf
+mkdir -p /var/run/php-fpm8
 chown -R www-data:www-data /var/www/html/wordpress
 
 # php-fpmを実行
