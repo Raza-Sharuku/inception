@@ -25,6 +25,8 @@ services:
       - web:/var/www/html
     ports:
       - "127.0.0.1:443:443"
+    env_file:
+      - .env
     restart: always
     networks:
       - inception-sraza-network
@@ -50,6 +52,7 @@ services:
 networks:
   inception-sraza-network:
     name: inception-sraza-network
+    driver: bridge
 volumes:
   db:
     driver_opts:

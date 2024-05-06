@@ -35,5 +35,6 @@ sed -ie 's/listen = \/run\/php\/php8.0-fpm.sock/listen = 0.0.0.0:9000/g' /etc/ph
 mkdir -p /var/run/php-fpm8
 chown -R www-data:www-data /var/www/html/wordpress
 
+echo "here we start tpo waiting next move"
 # php-fpmを実行
 /usr/sbin/php-fpm8.0 -F

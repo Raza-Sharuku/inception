@@ -7,15 +7,12 @@ ENV DEBCONF_NOWARNINGS=yes
 
 # パッケージのインストールとシステムのアップデート
 RUN apt-get update && \
-    apt-get install -y apt-utils \
-    mariadb-server \
-    mariadb-client \
-    mariadb-common && \
+    apt-get install -y apt-utils mariadb-server mariadb-client mariadb-common && \
     apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 # 設定ファイルのコピー
-COPY ./conf/mariadb-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # # ディレクトリの作成と所有権の設定
 RUN mkdir -p /var/run/mysqld /var/log/mariadb && \
@@ -35,4 +32,6 @@ EXPOSE 3306
 USER mysql
 
 # コンテナ起動時のコマンド
-CMD ["/usr/local/bin/setup_db.sh"]
+ENTRYPOINT ["setup_db.sh"]
+
+# CMD [ "/usr/bin/mysqld", "--user=mysql", "--console" ]

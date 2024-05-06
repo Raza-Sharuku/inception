@@ -42,3 +42,7 @@ start_mariadb
 setup_mariadb
 
 wait
+echo "mysql here we start to waiting next move"
+
+
+
