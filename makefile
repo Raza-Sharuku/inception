@@ -1,7 +1,7 @@
 include ./srcs/.env
 COMPOSE_FILE    := ./srcs/docker-compose.yml
-MKDIR_CMD        := mkdir -p $(HOME)/sraza/data/db $(HOME)/sraza/data/wordpress
-RM_DATA_CMD        := sudo rm -rf $(HOME)/sraza/data
+MKDIR_CMD        := mkdir -p $(HOME)/data/db $(HOME)/data/wordpress
+RM_DATA_CMD        := sudo rm -rf $(HOME)/data
 RM_PS_CMD        := docker rm -f $$(docker ps -qa)
 RM_VOL_CMD        := docker volume rm -f $$(docker volume ls)
 RM_IMAGE_CMD    := docker rmi -f $$(docker image ls -q)
