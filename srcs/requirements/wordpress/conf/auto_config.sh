@@ -1,14 +1,10 @@
 #!/bin/bash
 
-sleep 3
-while ! mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER_NAME" -p"$MYSQL_USER_PW" "$MYSQL_DB_NAME" --silent; do
-  echo "[i] waiting database connection..."
-  sleep 3
-done
+sleep 1
 
 # 解凍
 tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress
-sleep 5
+sleep 3
 echo "Wordpress Unzipping completed"
 
 # wp-config.phpが存在しない場合のみ設定を行う
@@ -31,10 +27,8 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
   echo "wp-config.php Setting Completed"
 fi
 
-sed -ie 's/listen = \/run\/php\/php8.0-fpm.sock/listen = 0.0.0.0:9000/g' /etc/php/8.0/fpm/pool.d/www.conf
 mkdir -p /var/run/php-fpm8
 chown -R www-data:www-data /var/www/html/wordpress
 
-echo "here we start tpo waiting next move"
 # php-fpmを実行
 /usr/sbin/php-fpm8.0 -F

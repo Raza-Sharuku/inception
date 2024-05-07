@@ -38,9 +38,7 @@ RUN sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.0/fpm/php.ini
 
 # wp-cliのインストール
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
-RUN chmod +x /usr/local/bin/wp
+RUN chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && chmod +x /usr/local/bin/wp
 
 # auto_config.shスクリプトのコピーと実行権限の付与
 COPY conf/auto_config.sh /var/www/html/

@@ -9,11 +9,7 @@ start_mariadb()
 # MariaDBの設定を行う関数
 setup_mariadb() 
 {
-    sleep 2  # Wait for MariaDB server to start
-    while ! mysqladmin ping -h localhost --silent; do
-        echo "Waiting for database connection..."
-        sleep 10
-    done
+    sleep 3  # Wait for MariaDB server to start
     echo "mysqld is alive"
 
     # データベースを作成（空のデータベース名を回避）

@@ -2,8 +2,6 @@
 
 [mysqld]
 socket=/var/run/mysqld/mysqld.sock
-plugin-load-add = auth_pam.so
-lower_case_table_names = 1
 tmpdir = /var/tmp
 
 [galera]
