@@ -1,10 +1,6 @@
 # 使用する基盤イメージ
 FROM debian:bullseye
 
-# 環境変数設定
-ENV DEBIAN_FRONTEND=noninteractive
-ENV DEBCONF_NOWARNINGS=yes
-
 # パッケージのインストールとシステムのアップデート
 RUN apt-get update && \
     apt-get install -y apt-utils mariadb-server mariadb-client mariadb-common && \

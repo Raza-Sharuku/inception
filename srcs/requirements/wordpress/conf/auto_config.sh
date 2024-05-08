@@ -1,8 +1,7 @@
 #!/bin/bash
 
-sleep 1
-
 # 解凍
+sleep 1
 tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 755 /var/www/html/wordpress
 sleep 3
 echo "Wordpress Unzipping completed"
@@ -21,8 +20,6 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 
   # Create additional user
   wp user create "${WP_AUTHOR_NAME}" sraza@example.com --user_pass="${WP_AUTHOR_PASSWD}" --role=author --allow-root
-
-  mv /tmp/index.html /var/www/html/wordpress/
 
   echo "wp-config.php Setting Completed"
 fi
