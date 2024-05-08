@@ -1,0 +1,7 @@
+*~
+*.swp
+*.log
+node_modules/
+
+# .envファイルを無視から除外する
+!/srcs/.env
