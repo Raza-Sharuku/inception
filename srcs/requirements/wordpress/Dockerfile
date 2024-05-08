@@ -42,9 +42,7 @@ RUN chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && chmod +x /usr/lo
 
 # auto_config.shスクリプトのコピーと実行権限の付与
 COPY conf/auto_config.sh /var/www/html/
-# COPY ./tools/index.html /tmp/
 RUN chmod 755 /var/www/html/auto_config.sh 
-# /tmp/index.html
 
 RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
 
