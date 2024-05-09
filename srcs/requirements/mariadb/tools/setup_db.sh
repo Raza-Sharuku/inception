@@ -39,3 +39,8 @@ start_mariadb &
 setup_mariadb
 
 wait
+
+exec "$@"
+
+# シグナルハンドラを設定してゾンビにならないようにしてみるのは？
+# 

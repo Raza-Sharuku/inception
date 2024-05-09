@@ -30,6 +30,6 @@ USER mysql
 # コンテナ起動時のコマンド
 ENTRYPOINT ["setup_db.sh"]
 # ENTRYPOINT ["setup_db.sh"]
-# CMD ["mysqld"]
+CMD ["mysqld"]
 
 
