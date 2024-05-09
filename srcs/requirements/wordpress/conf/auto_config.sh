@@ -25,6 +25,9 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
   echo "wp-config.php Setting Completed"
 fi
 
+else ;
+  echo "wp-config.php was created before."
+
 mkdir -p /var/run/php-fpm8
 chown -R www-data:www-data /var/www/html/wordpress
 
