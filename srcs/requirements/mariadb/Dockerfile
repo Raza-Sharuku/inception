@@ -3,7 +3,7 @@ FROM debian:bullseye
 
 # パッケージのインストールとシステムのアップデート
 RUN apt-get update && \
-    apt-get install -y apt-utils mariadb-server mariadb-client mariadb-common && \
+    apt-get install -y apt-utils mariadb-server mariadb-client mariadb-common tini && \
     apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
@@ -29,5 +29,7 @@ USER mysql
 
 # コンテナ起動時のコマンド
 ENTRYPOINT ["setup_db.sh"]
+# ENTRYPOINT ["setup_db.sh"]
+# CMD ["mysqld"]
 
 

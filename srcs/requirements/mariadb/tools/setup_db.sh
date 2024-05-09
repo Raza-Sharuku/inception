@@ -3,7 +3,8 @@
 # MariaDBサーバーを起動する関数
 start_mariadb() 
 {
-    mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0 &
+    /usr/bin/tini -- mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf
+    # mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0
 }
 
 # MariaDBの設定を行う関数
@@ -31,11 +32,10 @@ setup_mariadb()
     echo "MariaDB setup completed successfully!"
 }
 
-# バックグラウンドでMariaDBサーバーを起動
-start_mariadb
+# フォアグラウンドでMariaDBサーバーを起動
+start_mariadb &
 
 # MariaDBの設定を行う
 setup_mariadb
 
 wait
-
