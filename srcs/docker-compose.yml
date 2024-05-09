@@ -24,11 +24,10 @@ services:
     volumes:
       - web:/var/www/html
     ports:
-      - "9000"
+      - "9000:9000"
     env_file:
       - .env
     restart: always
-    entrypoint: sh -c "chmod +x /var/www/html/auto_config.sh && /var/www/html/auto_config.sh"
     networks:
       - inception-sraza-network
 
@@ -52,7 +51,7 @@ services:
 networks:
   inception-sraza-network:
     name: inception-sraza-network
-    # driver: bridge
+    driver: bridge
 
 volumes:
   db:

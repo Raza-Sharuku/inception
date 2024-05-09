@@ -39,5 +39,3 @@ setup_mariadb
 
 wait
 
-
-

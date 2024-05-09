@@ -13,7 +13,7 @@ dir_create:
 	@$(MKDIR_CMD)
 
 up:
-	@docker-compose -f $(COMPOSE_FILE) up --build -d
+	@docker-compose -f $(COMPOSE_FILE) up --build
 
 down:
 	@docker-compose -f $(COMPOSE_FILE) down

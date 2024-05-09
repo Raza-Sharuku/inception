@@ -28,4 +28,6 @@ EXPOSE 3306
 USER mysql
 
 # コンテナ起動時のコマンド
-ENTRYPOINT ["/usr/local/bin/setup_db.sh"]
+ENTRYPOINT ["setup_db.sh"]
+
+
