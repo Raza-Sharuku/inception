@@ -3,7 +3,7 @@
 # 解凍
 sleep 1
 tar -xzvf /tmp/wordpress-6.2.tar.gz -C /var/www/html/ >/dev/null && chmod -R 775 /var/www/html/wordpress
-sleep 3
+sleep 5
 echo "Wordpress Unzipping completed"
 
 # wp-config.phpが存在しない場合のみ設定を行う
@@ -23,10 +23,10 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
   # データベースにサンプルデータをインポート
 
   echo "wp-config.php Setting Completed"
-fi
 
-else ;
-  echo "wp-config.php was created before."
+else 
+  echo "Your already have wp-config.php."
+fi
 
 mkdir -p /var/run/php-fpm8
 chown -R www-data:www-data /var/www/html/wordpress
