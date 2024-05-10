@@ -27,9 +27,6 @@ EXPOSE 3306
 # # ユーザーの切り替え
 USER mysql
 
-# コンテナ起動時のコマンド
+# # コンテナ起動時のコマンド
 ENTRYPOINT ["setup_db.sh"]
-# ENTRYPOINT ["setup_db.sh"]
-CMD ["mysqld"]
-
 

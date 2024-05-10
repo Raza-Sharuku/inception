@@ -1,10 +1,9 @@
-#! /bin/bash
+#!/bin/bash
 
 # MariaDBサーバーを起動する関数
 start_mariadb() 
 {
-    /usr/bin/tini -- mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf
-    # mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf --innodb_use_native_aio=0
+    mysqld --defaults-file=/etc/mysql/mariadb.conf.d/50-server.cnf
 }
 
 # MariaDBの設定を行う関数
@@ -39,8 +38,3 @@ start_mariadb &
 setup_mariadb
 
 wait
-
-exec "$@"
-
-# シグナルハンドラを設定してゾンビにならないようにしてみるのは？
-# 

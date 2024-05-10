@@ -1,8 +1,6 @@
 [server]
 
 [mysqld]
-socket=/var/run/mysqld/mysqld.sock
-tmpdir = /var/tmp
 bind-address = 0.0.0.0
 
 [galera]
